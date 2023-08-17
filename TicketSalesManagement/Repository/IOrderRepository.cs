@@ -8,5 +8,6 @@ namespace TicketSalesManagement.Repository
         Task<Order> GetById(int id);
         void Delete(Order @order);
         void Update(Order @order);
+        void Insert(Order @order);  
     }
 }

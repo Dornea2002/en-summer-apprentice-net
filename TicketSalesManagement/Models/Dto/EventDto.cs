@@ -7,5 +7,6 @@
         public string EventDescription { get; set; }
         public string EventType { get; set; }
         public string Venue { get; set; }
+        public virtual ICollection<TicketCategoryDto> TicketCategories { get; set; }
     }
 }

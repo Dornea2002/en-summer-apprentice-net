@@ -7,8 +7,9 @@ namespace TicketSalesManagement.Models.Profiles
     {
         public EventProfile()
         {
-            CreateMap<Event, EventDto>().ReverseMap();
-            CreateMap<Event, EventPatchDto>().ReverseMap();
+            CreateMap<Event, EventDto>().ForMember(dest => dest.TicketCategories, opt => opt.MapFrom(src => src.TicketCategories));
+            CreateMap<Event, EventPatchDto>();
+            CreateMap<TicketCategory, TicketCategoryDto>();
         }
     }
 }

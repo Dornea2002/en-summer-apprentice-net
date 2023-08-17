@@ -10,11 +10,13 @@ using TicketSalesManagement.Repository;
 using AutoMapper;
 using TicketSalesManagement.Models.Dto;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Cors;
 
 namespace TicketSalesManagement.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [EnableCors]
     public class EventController : ControllerBase
     {
         private readonly IMapper _mapper;

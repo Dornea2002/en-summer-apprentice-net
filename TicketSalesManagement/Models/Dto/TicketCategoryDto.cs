@@ -6,6 +6,6 @@
         public string? Description { get; set; }
         public float? Price { get; set; }
         public int? Eventid { get; set; }
-        public virtual Event? Event { get; set; }
+        // public virtual Event? Event { get; set; }
     }
 }

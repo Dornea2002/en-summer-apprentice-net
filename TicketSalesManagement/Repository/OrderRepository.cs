@@ -41,5 +41,10 @@ namespace TicketSalesManagement.Repository
             _dbContext.SaveChanges();
         }
 
+        public void Insert(Order order)
+        {
+            _dbContext.Entry(order).State = EntityState.Added;
+            _dbContext.SaveChanges();
+        }
     }
 }

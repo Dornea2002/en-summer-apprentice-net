@@ -3,17 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using TicketSalesManagement.Models.Dto;
 using TicketSalesManagement.Models;
 using TicketSalesManagement.Repository;
+using Microsoft.AspNetCore.Cors;
 
 namespace TicketSalesManagement.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [EnableCors]
     public class OrderController : ControllerBase
     {
+
         private readonly TicketSalesManagementContext _ticketSalesManagementContext;
         private readonly IOrderRepository _orderRepository;
         private readonly ITicketCategoryRepository _ticketCategoryRepository;
-        private readonly ILogger _logger;
         private readonly IMapper _mapper;
         private EventController _eventController;
         private OrderDto orderDto;
@@ -24,7 +26,6 @@ namespace TicketSalesManagement.Controllers
             _orderRepository = orderRepository;
             _mapper = mapper;
             _ticketCategoryRepository = ticketCategoryRepository;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -76,10 +77,11 @@ namespace TicketSalesManagement.Controllers
         [HttpPatch]
         public async Task<ActionResult<OrderPatchDto>> Patch(OrderPatchDto orderPatch)
         {
+
             var orderEntity = await _orderRepository.GetById(orderPatch.OrderID);
             if (orderEntity == null)
             {
-                return NotFound();
+                return NotFound("Suntem smecheri");
             }
 
             if (orderPatch.TicketCategoryid != 0)
@@ -108,5 +110,23 @@ namespace TicketSalesManagement.Controllers
             _orderRepository.Update(orderEntity);
             return Ok(orderEntity);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<OrderPatchDto>> Post(OrderPatchDto orderPatch)
+        {
+
+            var orderEntity = new Order();
+
+            var ticketCategory = await _ticketCategoryRepository.GetById(orderPatch.TicketCategoryid);
+            double totalPrice = (double)(ticketCategory.Price * orderPatch.NumberOfTickets);
+            orderEntity.TotalPrice = totalPrice;
+
+            orderEntity.NumberOfTickets= orderPatch.NumberOfTickets;
+            orderEntity.TicketCategoryid = ticketCategory.TicketCategoryid;
+
+            _orderRepository.Insert(orderEntity);
+            return Ok(orderEntity.Orderid);
+        }
+
     }
 }
